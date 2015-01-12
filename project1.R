@@ -1,8 +1,6 @@
 <<<<<<< HEAD
-jpeg(filename="C:/users/josh/documents/exdata_plotting1/ExData_plotting1/histogram.jpeg")
-jpeg(filename="C:/users/josh/documents/exdata_plotting1/ExData_plotting1/globalactivepower.jpeg")
-jpeg(filename="C:/users/josh/documents/exdata_plotting1/ExData_plotting1/energysubmetering.jpeg")
-jpeg(filename="C:/users/josh/documents/exdata_plotting1/ExData_plotting1/mfrow2x2.jpeg")
+
+png(filename="C:/users/josh/documents/exdata_plotting1/mfrow2x2.png")
 
 =======
 >>>>>>> b1349fed160c88aaa4cfd3b85f0341a7eb845553
@@ -34,24 +32,30 @@ data$Sub_metering_3<-as.numeric(data$Sub_metering_3)
 
 if(nrow(data)!=2880){warning("Data does not show (2days x 24hours x 60 minutes) 2880 observations")}
 
+png(filename="C:/users/josh/documents/exdata_plotting1/Plot 1.png")
 par(mar=c(2,2,2,2), mfrow=c(1,1))
 with(data, hist(Global_Active_Power,
                 main="Global Active Power",
                 xlab="Global Active Power (kilowatts)",
                 ylab="Frequency",
                 col="red"))
+dev.off()
 <<<<<<< HEAD
+png(filename="C:/users/josh/documents/exdata_plotting1/Plot 2.png")
 par(mar=c(2,4,2,4), oma=c(1,1,1,1), mfrow=c(1,1))
 with(data,plot(DateTime, Global_Active_Power, 
                type="l",
                ylab="Global Active Power (kilowatts)",
                xlab=""),
      axis(1,at=c("2007-02-01 CST","2007-02-02 CST","2007-02-03 CST"), labels=c("Thu","Fri","Sat")))
+dev.off()
+
+
 par(mar=c(2,4,2,4), oma=c(1,1,1,1), mfrow=c(1,1))
 with(data, plot(DateTime, Sub_metering_1, type="l", xlab="Date/Time",ylab="Energy sub metering"))
 with(data, lines(DateTime, Sub_metering_2, col = "red"))
 with(data, lines(DateTime, Sub_metering_3, "s", col = "blue"))
-
+dev.off()
 
 
 par(mar=c(1,1,1,1), mfrow=c(2,2))
