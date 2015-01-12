@@ -55,7 +55,11 @@ with(data, lines(DateTime, Sub_metering_3, "s", col = "blue"))
 
 
 par(mar=c(1,1,1,1), mfrow=c(2,2))
-with(data, plot(DateTime, Global_Active_Power, "l"))
+with(data, hist(Global_Active_Power,
+                main="Global Active Power",
+                xlab="Global Active Power (kilowatts)",
+                ylab="Frequency",
+                col="red"))
 with(data, plot(DateTime, Voltage, "l"))
 with(data, plot(DateTime, Sub_metering_1, "l"))
 with(data, lines(DateTime, Sub_metering_2, col = "red"))
@@ -63,22 +67,5 @@ with(data, lines(DateTime, Sub_metering_3, col = "blue"))
 with(data, plot(DateTime, Global_Active_Power, "l"))
 dev.off()
 =======
-par(mar=c(1,1,1,1), mfrow=c(1,1))
-with(data,plot(Date, Global_Active_Power, 
-               type="l",
-               ylab="Global Active Power (kilowatts"))
-par(mar=c(1,1,1,1), mfrow=c(1,1))
-with(data, plot(Time, Sub_metering_1, "l"))
-with(data, lines(Time, Sub_metering_2, col = "red"))
-with(data, plot(Time, , "s"))
-with(data, plot(Time, Sub_metering_2, "s", col = "red"))
-with(data, lines(Time, Sub_metering_3, "s", col = "blue"))
 
-par(mar=c(1,1,1,1), mfrow=c(2,2))
-with(data, plot(Time, Global_Active_Power, "l"))
-with(data, plot(DateTime, Voltage, "l"))
-with(data, plot(Time, Sub_metering_1),
-     plot(Time, Sub_metering_2, col = "red"),
-     plot(Time, Sub_metering_3, col = "blue"))
-with(data, plot(DateTime, Global_Active_Power, "l"))
 >>>>>>> b1349fed160c88aaa4cfd3b85f0341a7eb845553
