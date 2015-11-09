@@ -17,7 +17,7 @@ Sub_metering_3<-as.numeric(DF$Sub_metering_3)
 
 if(nrow(data)!=2880){warning("Data does not show (2days x 24hours x 60 minutes) 2880 observations")}
 
-png(filename="./exdata_plotting1/Plot 2.png")
+png(filename="./exdata_plotting1/Plot 3.png")
 with(DF, plot(DateTime, Sub_metering_1, "l"))
 with(DF, lines(DateTime, Sub_metering_2, col = "red"))
 with(DF, lines(DateTime, Sub_metering_3, col = "blue"))

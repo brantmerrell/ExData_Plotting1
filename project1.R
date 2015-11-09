@@ -1,62 +1,49 @@
 
-png(filename="C:/users/josh/documents/exdata_plotting1/mfrow2x2.png")
+File<-list.files(getwd(),"household_.+\\.txt$",full.names=T,recursive=T)
+DF<-read.csv2(File,nrows=as.integer(2075259*0.05))
+DF$DateTime <- as.POSIXct(paste(DF$Date, DF$Time), format="%d/%m/%Y %H:%M:%S") 
+DF$Date<-strptime(DF$Date, format="%d/%m/%Y")
+DF<-DF[DF$Date %in% c("2007-02-01","2007-02-02"),]
+DF$Time<-strptime(DF$Time, format="%H:%M:%S")
+head(DF$DateTime)
+colnames(DF)
+Global_Active_Power<-as.numeric(DF$Global_active_power)
+Global_Reactive_Power<-as.numeric(DF$Global_reactive_power)
+Voltage<-as.numeric(DF$Voltage)
+Global_Intensity<-as.numeric(DF$Global_intensity)
+Sub_metering_1<-as.numeric(DF$Sub_metering_1)
+Sub_metering_2<-as.numeric(DF$Sub_metering_2)
+Sub_metering_3<-as.numeric(DF$Sub_metering_3)
 
-data<-read.csv2("C:/users/josh/downloads/exdata-data-household_power_consumption/household_power_consumption.txt",
-                colClasses="character",
-                col.names=c("Date","Time","Global_Active_Power","Global_Reactive_Power",
-                            "Voltage","Global_Intensity",
-                            "Sub_metering_1","Sub_metering_2","Sub_metering_3"),
-                nrows=as.integer(2075259*0.05))
-data$DateTime <- as.POSIXct(paste(data$Date, data$Time), format="%d/%m/%Y %H:%M:%S") 
-data$Date<-strptime(data$Date, format="%d/%m/%Y")
-data<-data[data$Date=="2007-02-01" | 
-             data$Date=="2007-02-02",]
-data$Time<-strptime(data$Time, format="%H:%M:%S")
-data$DateTime <- strptime(paste(data$Date, data$Time), format="%Y-%m-%d %H:%M:%S")
-data$Global_Active_Power<-as.numeric(data$Global_Active_Power)
-data$Global_Reactive_Power<-as.numeric(data$Global_Reactive_Power)
-data$Voltage<-as.numeric(data$Voltage)
-data$Global_Intensity<-as.numeric(data$Global_Intensity)
-data$Sub_metering_1<-as.numeric(data$Sub_metering_1)
-data$Sub_metering_2<-as.numeric(data$Sub_metering_2)
-data$Sub_metering_3<-as.numeric(data$Sub_metering_3)
+if(nrow(DF)!=2880){warning("DF does not show (2days x 24hours x 60 minutes) 2880 observations")}
 
-if(nrow(data)!=2880){warning("Data does not show (2days x 24hours x 60 minutes) 2880 observations")}
-
-png(filename="C:/users/josh/documents/exdata_plotting1/Plot 1.png")
-par(mar=c(2,2,2,2), mfrow=c(1,1))
-with(data, hist(Global_Active_Power,
-                main="Global Active Power",
-                xlab="Global Active Power (kilowatts)",
-                ylab="Frequency",
-                col="red"))
-dev.off()
-png(filename="C:/users/josh/documents/exdata_plotting1/Plot 2.png")
+png(filename="./exdata_plotting1/Plot 2.png")
 par(mar=c(2,4,2,4), oma=c(1,1,1,1), mfrow=c(1,1))
-with(data,plot(DateTime, Global_Active_Power, 
-               type="l",
-               ylab="Global Active Power (kilowatts)",
-               xlab=""),
+with(DF,plot(DateTime, Global_Active_Power, 
+             type="l",
+             ylab="Global Active Power (kilowatts)",
+             xlab=""),
      axis(1,at=c("2007-02-01 CST","2007-02-02 CST","2007-02-03 CST"), labels=c("Thu","Fri","Sat")))
 dev.off()
 
 
 par(mar=c(2,4,2,4), oma=c(1,1,1,1), mfrow=c(1,1))
-with(data, plot(DateTime, Sub_metering_1, type="l", xlab="Date/Time",ylab="Energy sub metering"))
-with(data, lines(DateTime, Sub_metering_2, col = "red"))
-with(data, lines(DateTime, Sub_metering_3, "s", col = "blue"))
+with(DF, plot(DateTime, Sub_metering_1, type="l", xlab="Date/Time",ylab="Energy sub metering"))
+with(DF, lines(DateTime, Sub_metering_2, col = "red"))
+with(DF, lines(DateTime, Sub_metering_3, "s", col = "blue"))
 dev.off()
 
-
-par(mar=c(1,1,1,1), mfrow=c(2,2))
-with(data, hist(Global_Active_Power,
-                main="Global Active Power",
-                xlab="Global Active Power (kilowatts)",
-                ylab="Frequency",
-                col="red"))
-with(data, plot(DateTime, Voltage, "l"))
-with(data, plot(DateTime, Sub_metering_1, "l"))
-with(data, lines(DateTime, Sub_metering_2, col = "red"))
-with(data, lines(DateTime, Sub_metering_3, col = "blue"))
-with(data, plot(DateTime, Global_Active_Power, "l"))
+?par
+par(mar=c(1,1,1,1), mfrow=c(1,2))
+with(DF, hist(Global_Active_Power,
+              main="Global Active Power",
+              xlab="Global Active Power (kilowatts)",
+              ylab="Frequency",
+              col="red"))
+with(DF, plot(DateTime, Voltage, "l"))
+png(filename="./exdata_plotting1/Plot 2.png")
+with(DF, plot(DateTime, Sub_metering_1, "l"))
+with(DF, lines(DateTime, Sub_metering_2, col = "red"))
+with(DF, lines(DateTime, Sub_metering_3, col = "blue"))
+with(DF, plot(DateTime, Global_Active_Power, "l"))
 dev.off()
