@@ -1,6 +1,16 @@
 # clear workspace
 rm(list=ls())
 
+# download dataset:
+download.file(
+  url = "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip",
+  destfile = "raw data (zip)",
+  mode='wb', cacheOK=FALSE
+)
+
+# unzip file:
+unzip("raw data (zip)")
+
 # read data
 consumption <- read.csv2("household_power_consumption.txt",
                          na.strings = "?")
