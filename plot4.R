@@ -12,32 +12,16 @@ download.file(
 unzip("raw data (zip)")
 
 # read data
-consumption <- read.csv2("household_power_consumption.txt",
-                         na.strings = "?")
+consumption <- fread("household_power_consumption.txt",
+                     na.strings="?")
 
-# convert data to YYYY-MM-DD format
-consumption$Date <- strptime(consumption$Date, format="%d/%m/%Y")
+# convert data to class 'Date'
+consumption$Date <- as.Date(consumption$Date, format="%d/%m/%Y")
+
+fromDate <- as.Date("2007-02-01"); toDate   <- as.Date("2007-02-02")
 
 # subset dataset to target dates February 1 and 2, 2007
-consumption<-consumption[consumption$Date %in% c("2007-02-01","2007-02-02"),]
-
-# sample 6 colors, ensuring the "energy sub metering" colors are distinct from each other
-sampleColors <- rep("",6)
-sampleColors[1] <- sample(colors(),1)
-sampleColors[2] <- sample(colors(),1)
-sampleColors[3] <- sample(colors()[grepl("dark",colors())],1)
-sampleColors[4] <- sample(colors[grepl("red",colors)],1)
-sampleColors[5] <- sample(colors[grepl("blue",colors)],1)
-sampleColors[6] <- sample(colors,1)
-
-# inspect colors
-plot(length(sampleColors):1, 
-     col = sampleColors, 
-     xlim = c(1,length(sampleColors)*1.5))
-legend("right",
-       legend = sampleColors,
-       fill = sampleColors) 
-# for undesirable colors, re-run corresponding line
+consumption<-consumption[(consumption$Date >= fromDate & consumption$Date <= toDate),]
 
 # open graphics device
 png("plot4.png")
@@ -49,8 +33,8 @@ par(mfrow = c(2,2))
 # sampleColors <- sample(colors(distinct = T),1) # select a color
 plot(x=as.ts(consumption$Global_active_power),
      ylab = "Global Active Power (kilowatts)",
-     xaxt = 'n', # remove automated x axis labels
-     col = sampleColors[1])
+     xaxt = 'n',
+     xlab = "") # remove automated x axis labels
 axis(1, at = seq(1,nrow(consumption),length.out = 3), labels = c("Thu","Fri","Sat"))
 
 # for the topright, plot voltage
@@ -58,13 +42,11 @@ axis(1, at = seq(1,nrow(consumption),length.out = 3), labels = c("Thu","Fri","Sa
 plot(x = as.ts(consumption$Voltage),
      ylab = "Voltage",
      xaxt = 'n',
-     col = sampleColors[2],
      xlab = "datetime")
 
 # for the bottomleft, repeat plot3
 # sampleColors <- sample(colors(distinct = T),1) # select a color
 plot(as.numeric(consumption$Sub_metering_1),
-     col = sampleColors[3],
      ylab = "Energy sub metering",
      xaxt = 'n',
      xlab = "",
@@ -76,20 +58,19 @@ axis(1, at = seq(1,nrow(consumption),length.out = 3), labels = c("Thu","Fri","Sa
 
 # add Sub_metering 2 and 3
 lines(as.numeric(consumption$Sub_metering_2),
-      col = sampleColors[4])
+      col = "red")
 lines(as.numeric(consumption$Sub_metering_3),
-      col = sampleColors[5])
+      col = "blue")
 legend("topright",
        legend = paste("Sub_metering",1:3,sep = "_"),
-       fill = sampleColors[3:5])
+       fill = c("black","red","blue"))
 
 # for the bottomright, plot global reactive power
 # sampleColors <- sample(colors(distinct = T),1) # select a color
 plot(x = as.ts(consumption$Global_reactive_power),
      ylab = "Global_reactive_power",
      xaxt = 'n',
-     xlab = "datetime",
-     col = sampleColors[6])
+     xlab = "datetime")
 
 # close graphics device
 dev.off()
